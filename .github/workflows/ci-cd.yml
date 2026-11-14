@@ -1,0 +1,82 @@
+name: Brain Bloom CI/CD
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: CI - verify Brain Bloom
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Test game and countdown timer
+        run: node --test tests/*.test.mjs
+
+  deploy:
+    name: CD - publish GitHub Pages
+    if: github.event_name != 'pull_request'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Prepare website and release marker
+        run: |
+          mkdir -p dist
+          cp index.html dist/index.html
+          if [ -f favicon.png ]; then cp favicon.png dist/favicon.png; fi
+          printf '%s\n' "$GITHUB_SHA" > dist/version.txt
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload tested site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  verify:
+    name: Verify that the new version is live
+    if: github.event_name != 'pull_request'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deployed commit version (allow for Pages cache)
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          echo "Checking ${SITE_URL} for commit ${GITHUB_SHA}"
+          for attempt in $(seq 1 18); do
+            version="$(curl -fsSL --max-time 15 "${SITE_URL%/}/version.txt?check=${GITHUB_SHA}" 2>/dev/null | tr -d '\r\n' || true)"
+            if [ "$version" = "$GITHUB_SHA" ]; then
+              curl -fsSL --max-time 15 "${SITE_URL%/}/index.html?check=${GITHUB_SHA}" | grep -q 'TIME_LIMITS'
+              echo "PASS: current version and timer code are live."
+              exit 0
+            fi
+            echo "Attempt $attempt: deployment has not reached the public site yet."
+            sleep 10
+          done
+          echo 'FAIL: public site is not serving this commit yet.' >&2
+          exit 1
