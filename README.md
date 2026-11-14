@@ -1,6 +1,7 @@
 # Brain Bloom: a beginner CI/CD project 🌸
+link: https://tranntd.github.io/brain-bloom/
 
-A playable static brain-training game with a real GitHub Actions pipeline:
+A playable static brain-training game:
 
 1. **CI:** On pull requests and pushes, validate `index.html`, game modes, timers, and local browser storage with Node's built-in test runner.
 2. **CD:** After tests pass on `main`, publish the exact tested website to GitHub Pages.
