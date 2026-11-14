@@ -1,2 +1,6 @@
-# small game
-this game created for myself to train my brain during the boring unemployed days
+# Brain Bloom with countdown timers 🌸
+
+The timer resets for each new round, stops when you answer, and clears when you exit the game.
+
+## 
+

@@ -63,6 +63,10 @@
     .play-card{background:#fff;border:1px solid #eee5e0;border-radius:30px;padding:33px;box-shadow:var(--shadow);max-width:765px;margin:15px auto 55px;min-height:480px;position:relative;overflow:hidden;}
     .play-head{display:flex;justify-content:space-between;align-items:center;gap:12px;}.play-head h2{font-size:27px;margin:7px 0;}.mode-label{display:inline-flex;padding:6px 11px;background:#f4eefb;color:#8063ac;border-radius:14px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.7px;}
     .rounds{color:var(--muted);font-size:14px;font-weight:900;background:#fbf7f7;border:1px solid #f1e8e8;border-radius:20px;padding:9px 14px;}
+    .play-head-right{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+    .timer-chip{min-width:85px;text-align:center;font-size:14px;font-weight:900;border:1px solid #ded2ef;background:#f5edfc;color:#7458a9;border-radius:20px;padding:9px 12px;font-variant-numeric:tabular-nums;transition:background .2s;}
+    .timer-chip.urgent{color:#b84b62;border-color:#f5b6c3;background:#fff0f2;animation:pulse-timer .7s ease-in-out infinite alternate;}
+    @keyframes pulse-timer{to{transform:scale(1.05)}}
     .progress-track{height:9px;border-radius:15px;background:#eeeaf1;overflow:hidden;margin:23px 0 27px;}.progress-fill{height:100%;background:linear-gradient(90deg,#a9cfae,#a996cf);width:0%;border-radius:15px;transition:width .25s;}
     .prompt{text-align:center;color:#615a6c;font-size:16px;font-weight:700;line-height:1.55;margin:5px 0 25px;}.puzzle{font-size:clamp(24px,4vw,37px);font-weight:900;letter-spacing:.7px;text-align:center;background:#f9f5ff;border:1px solid #ede5f5;border-radius:21px;padding:28px 10px;margin:0 auto 27px;max-width:560px;white-space:nowrap;}
     .options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:500px;margin:auto;}.option{padding:18px 13px;border-radius:17px;border:2px solid #eee8ef;background:white;color:var(--ink);font-size:23px;font-weight:900;transition:background .2s,border .2s,transform .2s;}.option:not(:disabled):hover{background:#faf5ff;border-color:#b4a3d3;transform:translateY(-2px);}.option.correct{background:#e4f4e5;border-color:#8ac799;}.option.wrong{background:#fde6e9;border-color:#e7a6af;}.option:disabled{cursor:default;}
@@ -73,7 +77,7 @@
     #toast{position:fixed;z-index:9;left:50%;bottom:23px;transform:translate(-50%,120px);background:#3d344d;color:white;padding:12px 20px;border-radius:15px;box-shadow:0 10px 32px #32273a55;font-weight:900;font-size:14px;opacity:0;transition:transform .25s,opacity .25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-overflow:ellipsis;overflow:hidden;}#toast.visible{transform:translate(-50%,0);opacity:1;}
     @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(3deg)}}@keyframes twinkle{0%,100%{opacity:.6;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
     @media(max-width:790px){.hero{grid-template-columns:1fr;}.hero-copy{padding:40px 34px 25px;}.art{min-height:315px;}.game-grid{grid-template-columns:1fr 1fr;}.daily{align-items:flex-start;}.nav-info .chip:nth-child(2){display:none;}}
-    @media(max-width:570px){.shell{padding:0 17px}.brand{font-size:19px}.brand-mark{width:35px;height:35px;font-size:23px}.topbar{padding-top:14px}.chip{padding:8px 11px;font-size:12px}.hero{border-radius:25px;margin-top:15px}.hero-copy{padding:32px 25px 28px}h1{letter-spacing:-1.6px}.art{min-height:280px;}.flower{bottom:239px;transform:scale(.85)}.pot{bottom:36px}.stem{bottom:147px}.leaf{bottom:200px}.art-floor{bottom:17px}.game-grid{grid-template-columns:1fr}.game-card{min-height:200px}.daily{flex-direction:column;gap:19px}.play-card{padding:21px 16px;min-height:465px}.puzzle{font-size:23px;padding:24px 7px}.option{font-size:21px;padding:14px 8px}.memory-board{grid-template-columns:repeat(2,minmax(0,135px))}.pad{height:110px}.rounds{font-size:12px;padding:7px 10px}.play-head h2{font-size:22px}footer{flex-direction:column;}}
+    @media(max-width:570px){.shell{padding:0 17px}.brand{font-size:19px}.brand-mark{width:35px;height:35px;font-size:23px}.topbar{padding-top:14px}.chip{padding:8px 11px;font-size:12px}.hero{border-radius:25px;margin-top:15px}.hero-copy{padding:32px 25px 28px}h1{letter-spacing:-1.6px}.art{min-height:280px;}.flower{bottom:239px;transform:scale(.85)}.pot{bottom:36px}.stem{bottom:147px}.leaf{bottom:200px}.art-floor{bottom:17px}.game-grid{grid-template-columns:1fr}.game-card{min-height:200px}.daily{flex-direction:column;gap:19px}.play-card{padding:21px 16px;min-height:465px}.puzzle{font-size:23px;padding:24px 7px}.option{font-size:21px;padding:14px 8px}.memory-board{grid-template-columns:repeat(2,minmax(0,135px))}.pad{height:110px}.rounds{font-size:12px;padding:7px 10px}.timer-chip{font-size:12px;min-width:70px;padding:7px 9px}.play-head h2{font-size:22px}footer{flex-direction:column;}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}}
   </style>
 </head>
@@ -99,7 +103,7 @@
       </div>
       <section id="play-view" aria-label="Game"><button id="back-home" class="back">← Back to my garden</button><div class="play-card" id="play-card" aria-live="polite"></div></section>
     </main>
-    <footer><span>Made with ♡ for curious minds </span><span>Your progress stays in this browser.</span></footer>
+    <footer><span>Made with ♡ for curious minds. No account. No ads. Just play.</span><span>Your progress stays in this browser.</span></footer>
   </div>
   <div id="toast" role="status" aria-live="polite"></div>
   <script>
@@ -108,6 +112,8 @@
       const STORAGE_KEY = 'brain-bloom-v1';
       const MODE_NAMES = {memory:'Memory Meadow',patterns:'Pattern Picnic',math:'Berry Quick Math'};
       const MODE_ICONS = {memory:'🦋',patterns:'🧩',math:'🍓'};
+      // Change these numbers to choose the seconds available for each round.
+      const TIME_LIMITS = {memory:20,patterns:25,math:15};
       const $ = (id) => document.getElementById(id);
       const pick = (list) => list[Math.floor(Math.random()*list.length)];
       const randomInt = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
@@ -118,10 +124,10 @@
       const normalizeDaily=()=>{if(stats.dailyDate!==today()){stats.dailyDate=today();stats.dailyModes=[];}if(!Array.isArray(stats.dailyModes))stats.dailyModes=[];};
       normalizeDaily();
       const save=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(stats));}catch(e){/* Fully playable without storage */}};
-      let session=null,sessionId=0,toastTimer=null;
+      let session=null,sessionId=0,toastTimer=null,timerInterval=null,timerDeadline=0;
       const modes=['memory','patterns','math'];
       function updateHome(){normalizeDaily();$('xp-number').textContent=String(stats.xp);$('game-number').textContent=String(stats.games);for(const m of modes){$('flower-'+m).classList.toggle('bloom',stats.dailyModes.includes(m));}const n=stats.dailyModes.length;$('garden-description').textContent=n===3?'Your garden is blooming! Come back tomorrow for fresh flowers. 🌈':`Play all 3 games today to help your flowers bloom. ${n}/3 collected!`;}
-      function goHome(){sessionId++;session=null;$('home-view').style.display='block';$('play-view').style.display='none';updateHome();window.scrollTo({top:0,behavior:'smooth'});}
+      function goHome(){stopTimer();sessionId++;session=null;$('home-view').style.display='block';$('play-view').style.display='none';updateHome();window.scrollTo({top:0,behavior:'smooth'});}
       function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),1700);}
       function shuffled(arr){return [...arr].sort(()=>Math.random()-.5);}
       function optionsFor(answer){const offsets=shuffled([-17,-12,-9,-7,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,9,12,17]);const nums=[answer];for(const offset of offsets){const candidate=answer+offset;if(candidate>=0&&!nums.includes(candidate))nums.push(candidate);if(nums.length===4)break;}return shuffled(nums);}
@@ -134,18 +140,66 @@
         return {prompt:seq.join('   ·   ')+'   ·   ?',answer,choices:optionsFor(answer),tip};
       }
       function nextMath(round){let a,b,op,answer;if(round===1||round===2){op=pick(['+','−']);a=randomInt(8,28);b=randomInt(3,24);if(op==='−'&&a<b)[a,b]=[b,a];answer=op==='+'?a+b:a-b;}else{op=pick(['+','−','×']);if(op==='×'){a=randomInt(3,11);b=randomInt(2,9);answer=a*b;}else{a=randomInt(13,54);b=randomInt(9,38);if(op==='−'&&a<b)[a,b]=[b,a];answer=op==='+'?a+b:a-b;}}return{prompt:`${a} ${op} ${b} = ?`,answer,choices:optionsFor(answer),tip:`${a} ${op} ${b} = ${answer}`};}
-      function start(mode){if(!MODE_NAMES[mode])return;sessionId++;session={mode,round:1,total:mode==='memory'?4:5,earned:0,answered:false,lock:true};$('home-view').style.display='none';$('play-view').style.display='block';window.scrollTo({top:0,behavior:'smooth'});if(mode==='memory'){session.sequence=Array.from({length:3},()=>randomInt(0,3));session.position=0;drawMemory();const id=sessionId;setTimeout(()=>showMemorySequence(id),550);}else{session.question=mode==='patterns'?nextPattern():nextMath(1);drawQuestion();}}
-      function head(){const s=session;return `<div class="play-head"><div><span class="mode-label">${MODE_ICONS[s.mode]} &nbsp; ${s.mode==='patterns'?'Logic':s.mode==='math'?'Quick thinking':'Memory'}</span><h2>${MODE_NAMES[s.mode]}</h2></div><span class="rounds">Round ${s.round} / ${s.total}</span></div><div class="progress-track" aria-label="Game progress"><div class="progress-fill" style="width:${Math.round((s.round-1)/s.total*100)}%"></div></div>`;}
-      function drawQuestion(){const s=session,q=s.question;$('play-card').innerHTML=head()+`<p class="prompt">${s.mode==='patterns'?'What number completes the pattern?':'Choose the correct answer. Take your time!'}</p><div class="puzzle">${q.prompt}</div><div class="options">${q.choices.map(n=>`<button class="option" data-answer="${n}" aria-label="Answer ${n}">${n}</button>`).join('')}</div><div class="feedback" id="feedback" role="status"></div><div class="next-area" id="next-area"></div>`;$('play-card').querySelectorAll('[data-answer]').forEach(el=>el.addEventListener('click',()=>answerQuestion(Number(el.dataset.answer))));}
-      function reward(points){session.earned+=points;stats.xp+=points;save();updateHome();}
-      function answerQuestion(choice){const s=session;if(!s||s.answered)return;s.answered=true;const correct=choice===s.question.answer;if(correct)reward(10);for(const el of $('play-card').querySelectorAll('[data-answer]')){el.disabled=true;const val=Number(el.dataset.answer);if(val===s.question.answer)el.classList.add('correct');else if(val===choice)el.classList.add('wrong');}const fb=$('feedback');fb.classList.add(correct?'good':'oops');fb.textContent=correct?'Lovely! +10 XP 🌟':`Not quite! ${s.question.tip}`;const btn=document.createElement('button');btn.className='button primary';btn.textContent=s.round===s.total?'See my flowers ✿':'Next puzzle →';btn.addEventListener('click',()=>{if(!session)return;if(s.round===s.total){finish();return;}s.round++;s.answered=false;s.question=s.mode==='patterns'?nextPattern():nextMath(s.round);drawQuestion();});$('next-area').appendChild(btn);}
-      function drawMemory(){const s=session;$('play-card').innerHTML=head()+`<p class="prompt">Watch the flowers glow, then tap them in the same order.</p><div class="memory-board" aria-label="Four colored memory pads">${[0,1,2,3].map(i=>`<button class="pad" data-color="${i}" aria-label="${['Lavender','Rose','Mint','Sunshine'][i]} pad" disabled></button>`).join('')}</div><div class="memory-status" id="memory-status" aria-live="polite">✨ Watch closely…</div><div class="feedback" id="memory-feedback" role="status"></div>`;$('play-card').querySelectorAll('.pad').forEach(el=>el.addEventListener('click',()=>memoryTap(Number(el.dataset.color))));}
-      const sleep=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
-      async function showMemorySequence(id){if(!session||id!==sessionId||session.mode!=='memory')return;session.lock=true;session.position=0;const pads=Array.from($('play-card').querySelectorAll('.pad'));if(!pads.length)return;pads.forEach(p=>p.disabled=true);$('memory-status').textContent='✨ Watch closely…';await sleep(550);for(const color of session.sequence){if(id!==sessionId||!session)return;const pad=pads[color];pad.classList.add('lit');await sleep(570);if(id!==sessionId||!session)return;pad.classList.remove('lit');await sleep(230);}if(id!==sessionId||!session)return;session.lock=false;pads.forEach(p=>p.disabled=false);$('memory-status').textContent=`Your turn! 0 / ${session.sequence.length} taps`;}
-      function memoryTap(color){const s=session;if(!s||s.mode!=='memory'||s.lock)return;const pad=$('play-card').querySelector(`.pad[data-color="${color}"]`);pad.classList.add('lit');setTimeout(()=>pad.classList.remove('lit'),180);if(s.sequence[s.position]!==color){s.lock=true;$('memory-feedback').textContent='A little mix-up! Watch the sequence again 💗';$('memory-feedback').className='feedback oops';toast('No worries, try again! 🌷');const id=sessionId;setTimeout(()=>{if(id!==sessionId)return;$('memory-feedback').textContent='';showMemorySequence(id);},850);return;}s.position++;$('memory-status').textContent=`Nice! ${s.position} / ${s.sequence.length} taps`;
-        if(s.position===s.sequence.length){s.lock=true;reward(15);if(s.round===s.total){$('memory-feedback').textContent='Wonderful memory! +15 XP 🌟';setTimeout(()=>{if(session===s)finish();},650);}else{const id=sessionId;$('memory-feedback').textContent='Perfect! +15 XP 🌟';setTimeout(()=>{if(id!==sessionId)return;s.round++;s.sequence.push(randomInt(0,3));drawMemory();setTimeout(()=>showMemorySequence(id),400);},800);}}
+      function stopTimer(){
+        if(timerInterval!==null){clearInterval(timerInterval);timerInterval=null;}
       }
-      function finish(){const s=session;if(!s)return;stats.games+=1;normalizeDaily();if(!stats.dailyModes.includes(s.mode))stats.dailyModes.push(s.mode);save();updateHome();$('play-card').innerHTML=`<div class="result"><span class="emoji">${stats.dailyModes.length===3?'🌈':'🌻'}</span><h2>You did lovely!</h2><p>You finished <strong>${MODE_NAMES[s.mode]}</strong>. Every little bit of practice counts, and your garden is happy to see you!</p><div class="result-points">✨ +${s.earned} XP earned</div><div style="display:flex;justify-content:center;flex-wrap:wrap;gap:11px"><button class="button primary" id="play-again">Play again ↗</button><button class="button secondary" id="return-garden">My garden ✿</button></div></div>`;$('play-again').addEventListener('click',()=>start(s.mode));$('return-garden').addEventListener('click',goHome);}
+      function showTimer(seconds){
+        const el=$('timer-display');
+        if(!el)return;
+        el.textContent=`⏳ ${seconds}s`;
+        el.classList.toggle('urgent',seconds<=5);
+      }
+      function startTimer(mode){
+        stopTimer();
+        const seconds=TIME_LIMITS[mode];
+        const currentSession=session;
+        const id=sessionId;
+        timerDeadline=Date.now()+seconds*1000;
+        showTimer(seconds);
+        timerInterval=setInterval(()=>{
+          if(currentSession!==session || id!==sessionId){stopTimer();return;}
+          const left=Math.max(0,Math.ceil((timerDeadline-Date.now())/1000));
+          showTimer(left);
+          if(left===0){stopTimer();timeOut();}
+        },150);
+      }
+      function timeOut(){
+        const s=session;
+        if(!s)return;
+        if(s.mode!=='memory'){
+          if(!s.answered)answerQuestion(null,true);
+          return;
+        }
+        if(s.lock)return;
+        s.lock=true;
+        $('play-card').querySelectorAll('.pad').forEach(p=>p.disabled=true);
+        $('memory-status').textContent='⏰ Time is up!';
+        $('memory-feedback').textContent='No worries! Give this round another try 🌷';
+        $('memory-feedback').className='feedback oops';
+        const btn=document.createElement('button');
+        btn.className='button primary';
+        btn.textContent='Watch the flowers again ↻';
+        const id=sessionId;
+        btn.addEventListener('click',()=>{
+          if(id!==sessionId||session!==s)return;
+          $('next-area').innerHTML='';
+          $('memory-feedback').textContent='';
+          showMemorySequence(id);
+        });
+        $('next-area').replaceChildren(btn);
+      }
+      function start(mode){if(!MODE_NAMES[mode])return;stopTimer();sessionId++;session={mode,round:1,total:mode==='memory'?4:5,earned:0,answered:false,lock:true};$('home-view').style.display='none';$('play-view').style.display='block';window.scrollTo({top:0,behavior:'smooth'});if(mode==='memory'){session.sequence=Array.from({length:3},()=>randomInt(0,3));session.position=0;drawMemory();const id=sessionId;setTimeout(()=>showMemorySequence(id),550);}else{session.question=mode==='patterns'?nextPattern():nextMath(1);drawQuestion();}}
+      function head(){const s=session;return `<div class="play-head"><div><span class="mode-label">${MODE_ICONS[s.mode]} &nbsp; ${s.mode==='patterns'?'Logic':s.mode==='math'?'Quick thinking':'Memory'}</span><h2>${MODE_NAMES[s.mode]}</h2></div><div class="play-head-right"><span class="timer-chip" id="timer-display" role="timer" aria-label="Time remaining">${s.mode==='memory'?'👀 Watch':'⏳ '+TIME_LIMITS[s.mode]+'s'}</span><span class="rounds">Round ${s.round} / ${s.total}</span></div></div><div class="progress-track" aria-label="Game progress"><div class="progress-fill" style="width:${Math.round((s.round-1)/s.total*100)}%"></div></div>`;}
+      function drawQuestion(){const s=session,q=s.question;$('play-card').innerHTML=head()+`<p class="prompt">${s.mode==='patterns'?'What number completes the pattern?':'Choose the correct answer before time runs out!'}</p><div class="puzzle">${q.prompt}</div><div class="options">${q.choices.map(n=>`<button class="option" data-answer="${n}" aria-label="Answer ${n}">${n}</button>`).join('')}</div><div class="feedback" id="feedback" role="status"></div><div class="next-area" id="next-area"></div>`;$('play-card').querySelectorAll('[data-answer]').forEach(el=>el.addEventListener('click',()=>answerQuestion(Number(el.dataset.answer))));startTimer(s.mode);}
+      function reward(points){session.earned+=points;stats.xp+=points;save();updateHome();}
+      function answerQuestion(choice,timedOut=false){const s=session;if(!s||s.answered)return;stopTimer();s.answered=true;const correct=!timedOut&&choice===s.question.answer;if(correct)reward(10);for(const el of $('play-card').querySelectorAll('[data-answer]')){el.disabled=true;const val=Number(el.dataset.answer);if(val===s.question.answer)el.classList.add('correct');else if(val===choice&&!timedOut)el.classList.add('wrong');}const fb=$('feedback');fb.classList.add(correct?'good':'oops');fb.textContent=timedOut?`⏰ Time's up! ${s.question.tip}`:correct?'Lovely! +10 XP 🌟':`Not quite! ${s.question.tip}`;const btn=document.createElement('button');btn.className='button primary';btn.textContent=s.round===s.total?'See my flowers ✿':'Next puzzle →';btn.addEventListener('click',()=>{if(session!==s)return;if(s.round===s.total){finish();return;}s.round++;s.answered=false;s.question=s.mode==='patterns'?nextPattern():nextMath(s.round);drawQuestion();});$('next-area').appendChild(btn);}
+      function drawMemory(){const s=session;$('play-card').innerHTML=head()+`<p class="prompt">Watch the flowers glow, then tap them in the same order.</p><div class="memory-board" aria-label="Four colored memory pads">${[0,1,2,3].map(i=>`<button class="pad" data-color="${i}" aria-label="${['Lavender','Rose','Mint','Sunshine'][i]} pad" disabled></button>`).join('')}</div><div class="memory-status" id="memory-status" aria-live="polite">✨ Watch closely…</div><div class="feedback" id="memory-feedback" role="status"></div><div class="next-area" id="next-area"></div>`;$('play-card').querySelectorAll('.pad').forEach(el=>el.addEventListener('click',()=>memoryTap(Number(el.dataset.color))));}
+      const sleep=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
+      async function showMemorySequence(id){if(!session||id!==sessionId||session.mode!=='memory')return;stopTimer();const timerEl=$('timer-display');if(timerEl){timerEl.textContent='👀 Watch';timerEl.classList.remove('urgent');}session.lock=true;session.position=0;const pads=Array.from($('play-card').querySelectorAll('.pad'));if(!pads.length)return;pads.forEach(p=>p.disabled=true);$('memory-status').textContent='✨ Watch closely…';await sleep(550);for(const color of session.sequence){if(id!==sessionId||!session)return;const pad=pads[color];pad.classList.add('lit');await sleep(570);if(id!==sessionId||!session)return;pad.classList.remove('lit');await sleep(230);}if(id!==sessionId||!session)return;session.lock=false;pads.forEach(p=>p.disabled=false);$('memory-status').textContent=`Your turn! 0 / ${session.sequence.length} taps`;startTimer('memory');}
+      function memoryTap(color){const s=session;if(!s||s.mode!=='memory'||s.lock)return;const pad=$('play-card').querySelector(`.pad[data-color="${color}"]`);pad.classList.add('lit');setTimeout(()=>pad.classList.remove('lit'),180);if(s.sequence[s.position]!==color){stopTimer();s.lock=true;$('memory-feedback').textContent='A little mix-up! Watch the sequence again 💗';$('memory-feedback').className='feedback oops';toast('No worries, try again! 🌷');const id=sessionId;setTimeout(()=>{if(id!==sessionId)return;$('memory-feedback').textContent='';showMemorySequence(id);},850);return;}s.position++;$('memory-status').textContent=`Nice! ${s.position} / ${s.sequence.length} taps`;
+        if(s.position===s.sequence.length){stopTimer();s.lock=true;reward(15);if(s.round===s.total){$('memory-feedback').textContent='Wonderful memory! +15 XP 🌟';setTimeout(()=>{if(session===s)finish();},650);}else{const id=sessionId;$('memory-feedback').textContent='Perfect! +15 XP 🌟';setTimeout(()=>{if(id!==sessionId)return;s.round++;s.sequence.push(randomInt(0,3));drawMemory();setTimeout(()=>showMemorySequence(id),400);},800);}}
+      }
+      function finish(){const s=session;if(!s)return;stopTimer();stats.games+=1;normalizeDaily();if(!stats.dailyModes.includes(s.mode))stats.dailyModes.push(s.mode);save();updateHome();$('play-card').innerHTML=`<div class="result"><span class="emoji">${stats.dailyModes.length===3?'🌈':'🌻'}</span><h2>You did lovely!</h2><p>You finished <strong>${MODE_NAMES[s.mode]}</strong>. Every little bit of practice counts, and your garden is happy to see you!</p><div class="result-points">✨ +${s.earned} XP earned</div><div style="display:flex;justify-content:center;flex-wrap:wrap;gap:11px"><button class="button primary" id="play-again">Play again ↗</button><button class="button secondary" id="return-garden">My garden ✿</button></div></div>`;$('play-again').addEventListener('click',()=>start(s.mode));$('return-garden').addEventListener('click',goHome);}
       $('logo').addEventListener('click',e=>{e.preventDefault();goHome();});$('back-home').addEventListener('click',goHome);$('surprise').addEventListener('click',()=>start(pick(modes)));document.querySelectorAll('[data-mode]').forEach(el=>el.addEventListener('click',()=>start(el.dataset.mode)));updateHome();
     })();
   </script>
