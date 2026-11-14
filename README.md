@@ -1,4 +1,5 @@
 # Brain Bloom: a beginner CI/CD project 🌸
+link: https://tranntd.github.io/brain-bloom/
 
 A playable static brain-training game:
 
